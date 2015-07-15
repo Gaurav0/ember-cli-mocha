@@ -59,8 +59,12 @@ module.exports = {
     return path.join(__dirname, 'blueprints');
   },
 
-  included: function(app) {
-    this._super.included(app);
+  included: function(app, parentAddOn) {
+    if (app.app) {
+      app = app.app;
+    }
+    this.app = app;
+    this._super.included.call(this, app, parentAddOn);
 
     if (app.tests) {
       var fileAssets = [
